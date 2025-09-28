@@ -1,0 +1,41 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    min-height: 5vh;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    padding: 20px 0;
+}
+
+nav li {
+    list-style: none;
+}
+
+nav li a {
+    text-decoration: none;
+    color: #000;
+}
+
+nav li a:hover {
+    text-decoration: underline;
+}
+
+main {
+    min-height: 85vh;
+    display: flex;
+    justify-content: center;
+    padding-top: 30px;
+}
+
+footer {
+    text-align: center;
+}
