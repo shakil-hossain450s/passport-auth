@@ -5,11 +5,16 @@
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "connect-mongo": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
-    "mongoose": "^8.18.2"
+    "express-session": "^1.18.2",
+    "mongo-connect": "^0.0.6",
+    "mongoose": "^8.18.2",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0"
   },
   "scripts": {
     "start": "nodemon index.js"

@@ -1,7 +1,10 @@
 const express = require("express");
+const bcrypt = require("bcrypt");
 const Users = require("../model/users.model");
 const usersModel = require("../model/users.model");
+const passport = require("passport");
 const router = express.Router();
+
 
 router.get("/register", (req, res) => {
     res.status(200).render("register", { title: "Register" });
@@ -11,13 +14,16 @@ router.post("/register", async (req, res) => {
     try {
 
         const { username, email, password } = req.body;
-        const existingUser = await Users.findOne({ email: email });
+        const existingUser = await Users.findOne({ $or: [{ email }, { username }] });
         if (existingUser) {
             return res.status(409).json({
                 message: "user already exist"
             })
         }
-        const newUser = new Users({ username, email, password });
+
+        const hash = await bcrypt.hash(password, 10);
+
+        const newUser = new Users({ username, email, password: hash });
         await newUser.save();
         res.status(201).redirect("/login");
 
@@ -36,29 +42,13 @@ router.get("/login", (req, res) => {
     res.status(200).render("login", { title: "Login" });
 });
 
-router.post("/login", async (req, res) => {
-    try {
-        const { username, password } = req.body;
-        const user = await Users.findOne({ username });
+router.post("/login", passport.authenticate("local", {
+    failureRedirect: "/login",
+    successRedirect: "/profile"
+}));
 
-        if (!user) {
-            return res.status(404).json({ message: "user not found" })
-        }
-
-        if (user.password !== password) {
-            return res.status(401).json({ message: "Invalid credentials" });
-        }
-
-        return res.status(200).json({
-            success: true,
-            user
-        });
-
-    } catch (err) {
-        res.status(500).json({
-            message: err.message
-        });
-    }
-});
+router.get("/profile", (req, res) => {
+    res.status(200).render("profile", { title: "Profile" })
+})
 
 module.exports = router;
