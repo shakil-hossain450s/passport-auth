@@ -26,8 +26,16 @@ router.post("/register", async(req, res) => {
     } catch(err) {
         res.status(500).json({
             message: err.message
-        })
+        });
     }
-})
+});
+
+router.get("/logout", (req, res)=> {
+    res.status(200).redirect("/");
+});
+
+router.get("/login", (req, res) => {
+    res.status(200).render("login", {title: "Login"});
+});
 
 module.exports = router;
