@@ -36,6 +36,10 @@ main {
     padding-top: 30px;
 }
 
+.title{
+    margin-bottom: 20px;
+}
+
 footer {
     text-align: center;
 }

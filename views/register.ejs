@@ -1,7 +1,24 @@
 <%- include("layout/header") %>
 
-   <main>
-        <h2>Welcome to Register Route</h2>
-   </main>
+    <main>
+        <section>
+            <h2 class="title"">Welcome to Register Route</h2>
+            <form action="/register" method="POST">
+                <label for="username">Username:
+                    <input type="text" name="username" id="username" placeholder="Enter username">
+                </label>
+                <br><br>
+                <label for="email">Your Email:
+                    <input type="email" name="email" id="email" placeholder="Enter email">
+                </label>
+                <br><br>
+                <label for="password">Password:
+                    <input type="text" name="password" id="password" placeholder="Enter password">
+                </label>
+                <br><br>
+                <input type="submit" value="Register">
+            </form>
+        </section>
+    </main>
 
-<%- include("layout/footer") %>
+    <%- include("layout/footer") %>
