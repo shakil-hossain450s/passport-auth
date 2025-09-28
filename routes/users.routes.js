@@ -34,21 +34,46 @@ router.post("/register", async (req, res) => {
     }
 });
 
-router.get("/logout", (req, res) => {
-    res.status(200).redirect("/");
-});
+const checkedLoggedIn = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        return res.redirect("/profile");
+    }
+    next();
+}
 
-router.get("/login", (req, res) => {
+router.get("/login", checkedLoggedIn, (req, res) => {
     res.status(200).render("login", { title: "Login" });
 });
 
-router.post("/login", passport.authenticate("local", {
-    failureRedirect: "/login",
-    successRedirect: "/profile"
-}));
+router.post(
+    "/login",
+    passport.authenticate("local", {
+        failureRedirect: "/login",
+        successRedirect: "/profile"
+    }));
 
-router.get("/profile", (req, res) => {
-    res.status(200).render("profile", { title: "Profile" })
-})
+const checkedAuthenticated = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.status(200).redirect("/login");
+}
+
+router.get("/profile", checkedAuthenticated, (req, res) => {
+    res.status(200).render("profile", { title: "Profile" });
+});
+
+router.get("/logout", (req, res, next) => {
+    try {
+        req.logout((err) => {
+            if (err) {
+                return next(err);
+            }
+            res.status(200).redirect("/");
+        })
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+});
 
 module.exports = router;
